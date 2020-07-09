@@ -1,0 +1,30 @@
+{
+	"background_color": "#5100ff",
+	"description": "This is my application test",
+	"display": "standalone",
+	"lang": "cn",
+	"name": "YYZiMig",
+	"short_name": "YYZiMig",
+	"start_url": "/",
+	"theme_color": "#5100ff",
+	"icons": [
+		{
+			"src": "/icons/Y96.png",
+			"sizes": "96x96",
+			"type": "image/png",
+			"density": "0.75"
+		},
+		{
+			"src": "/icons/Y144.png",
+			"sizes": "144x144",
+			"type": "image/png",
+			"density": "1.0"
+		},
+		{
+			"src": "/icons/Y192.png",
+			"sizes": "2x192",
+			"type": "image/png",
+			"density": "1.5"
+		}
+	]
+}
