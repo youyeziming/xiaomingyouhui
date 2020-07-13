@@ -1,38 +1,47 @@
 <template>
 	<div class="yhitem">
-		<div class="yh_info">
+		<div class="yh_info" v-if="data !== token">
 			<div class="dingdan" style="">
 				<div class="place">
-					<img src="https://static.czb365.com/1588062185117.jpg?x-oss-process=image/resize,m_lfit,h_200,w_200/format,png">
+					<img :src="data.img">
 				</div>
 				<div class="position_info">
 					<p class="title">
-						<a >大安石油大鸿加油站</a>
+						<a >{{data.place}}</a>
 					</p>
-					<p class="place_position">惠州市江北41号小区三环北路20号</p>
+					<p class="place_position">{{data.localtion}}</p>
 					<p class="value">
-						<span >￥<em>4.85</em></span>
-						<span style="padding-left: 10px;">降<em>0.47</em></span>
+						<span >￥<em>{{data.value}}</em></span>
+						<span style="padding-left: 10px;">降<em>{{data.div}}</em></span>
 					</p>
 				</div>
 			</div>
 			<div class="position">
 				<p style="text-align: right;">
 					<img src="../assets/img/Collection.png" alt="" width="20px">
+					<span class="commit" v-if="data.commit">{{data.commit}}</span> 
 				</p>
 				<p class="place_navigation">
-					<a style="color: #fff;">导航</a>
+					<a style="color: #fff;" href="fuel">导航</a>
 				</p>
-				<p >距您4.12KM</p>
+				<p >距您{{data.site}}KM</p>
 			</div>
 		</div>
+		<p style="padding: 5px 0px;text-align: center;margin: -5px 0 -5px 0;width: 100vw;background: #efefef;" v-if="data == token">附近暂无油站</p>
 	</div>
 </template>
 
 <script>
 	export default{
 		name:"YhItem",
-		props:[]
+		data(){
+			return {
+				token:"N"
+			}
+		},
+		props:[
+			"data"
+		]
 	}
 </script>
 
@@ -57,6 +66,10 @@
 	.position_info>p{
 		padding: 5px;
 	}
+	.commit{
+		position: relative;
+		top: -5px;
+	}
 	
 	.title{
 		font-size: 0.8em;
@@ -69,8 +82,9 @@
 	}
 	.dingdan{
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-start;
 		align-items: center;
+		width: 350px;
 	}
 
 	em{
@@ -86,6 +100,7 @@
 		text-align: center;
 		padding: 5px;
 		margin: 5px 0;
+		border-radius: 5px;
 	}
 	.navigation{
 		color: #fff;

@@ -34,9 +34,13 @@
 </script>
 
 <style scoped="scoped">
+	
+	
+	
 	ul{
 		padding: 0 10px;
 		background-color: #fff;
+		margin-bottom:10px;
 	}
 
 	

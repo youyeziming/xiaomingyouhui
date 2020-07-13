@@ -22,3 +22,17 @@ body,ul,button,li{
 .white{
 	color:#fff ;
 }
+
+h3{
+	margin: 0;
+	padding: 10px;
+	font-weight: 500;
+}
+
+.full_srceen{
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	background: #fff;
+	z-index: 999999;
+}

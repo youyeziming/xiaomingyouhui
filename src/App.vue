@@ -1,8 +1,6 @@
 <template>
   <div id="app" ref="app">
-   
-    <router-view/>
-	
+	<router-view/>
 	<nav id="navigator">
 		<li>
 			<router-link to="/">
@@ -29,17 +27,19 @@
 			</router-link>
 		</li>
 	</nav>
-
   </div>
 </template>
 
 <script>
-	import swiper from "./assets/js/swiper.js";
-	import routerInfo from "./router/router_info.js";
+	/* import swiper from "./assets/js/swiper.js";
+	import routerInfo from "./router/router_info.js"; */
 	export default {
 		name:"App",
+		beforeCreate(){
+			this.$store.dispatch("loadData");
+		},
 		mounted() {
-			let index = routerInfo.indexOf(this.$route.name);
+		/* 	let index = routerInfo.indexOf(this.$route.name);
 			let swiperBar  = new swiper(this.$refs.app,100,()=>{
 				//向右滑动
 				let offset = index = (index+1) == routerInfo.length ? 0 : ++index;
@@ -49,11 +49,11 @@
 				let offset = index = (index-1) == -1 ? routerInfo.length - 1 : --index;
 				this.$router.push({name:routerInfo[offset]});
 			});
+			console.log(swiperBar); */
 			
-			console.log(swiperBar);
+			
 		}
 	}
-	
 </script>
 
 <style>
@@ -83,5 +83,4 @@
 		background-color: #efefef;
 		overflow: hidden;
 	}
-	
 </style>

@@ -16,8 +16,11 @@
 	export default {
 		name:"Taber",
 		props:{
-			indexs:Array,
-			default:()=>[1,2,3,4]
+			indexs:{
+				type:Array,
+				default:()=>[1,2,3,4],
+			}
+			
 		},
 		data(){
 			return{
@@ -25,11 +28,9 @@
 				alive:"alive"
 			}
 		},
-		
 		methods:{
 			tap(e){
 				let index  = e.currentTarget.dataset.index;
-				
 				this.$refs.lineBar.style.left = index * 25 +"vw"
 				this.$refs.list.children[this.index].classList.remove("screen")
 				this.$refs.list.children[index].classList.add("screen")

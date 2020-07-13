@@ -25,7 +25,7 @@
 			<div class="collect">
 				<ItemBar mes="修改密码" color="#ff729a"></ItemBar>
 				<ItemBar mes="客服热线 4008227886" color="#16dbcb" link="tel:4008227886"></ItemBar>
-				<ItemBar mes="退出登陆" color="#44c4ff"></ItemBar>
+				<ItemBar mes="退出登陆" color="#44c4ff" @click="cancellation"></ItemBar>
 			</div>
 			<div style="height: 58px;"></div>
 		</div>
@@ -40,6 +40,12 @@
 	
 	export default {
 		name:"Home",
+		methods:{
+			//注销
+			cancellation(){
+				delete window.login;
+			}
+		},
 		components:{
 			ShowBar,
 			ItemBar,
