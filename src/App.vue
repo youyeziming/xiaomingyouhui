@@ -39,6 +39,9 @@
 			this.$store.dispatch("loadData");
 		},
 		mounted() {
+			this.$store.dispatch("loadData");
+			this.$store.dispatch("loadFuel")
+			
 		/* 	let index = routerInfo.indexOf(this.$route.name);
 			let swiperBar  = new swiper(this.$refs.app,100,()=>{
 				//向右滑动

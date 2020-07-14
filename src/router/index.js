@@ -39,9 +39,10 @@ const routes = [
     component:Login 
   },
   {
-	path: '/fuel',
+	path: '/fuel/:index',
 	name: 'Fuel',
-	component:Fuel
+	component:Fuel,
+	props:({params,query})=>({index:params.index,type:decodeURIComponent(query.type)})
   }
 ]
 
@@ -53,22 +54,19 @@ const router = new VueRouter({
 
 
 router.beforeEach(function(to,from,next){
-	/* if(to.path== "/fuelpage"){
-		console.log(1)
-		next();
-	} */
-	
-	if(to.path == "/login"||to.path =="/fuel"){
+
+	if(to.path == "/login" || to.path.match("/fuel")){
 		next();
 	}
-	console.log(to.path)
+	
 	
 	if(to.path == "/"||to.path== "/index"){
 		next();
 	}
-	
-	if(to.path !=="/index" && to.path !=="/fuel"  && !window.login){
-		next("/login");
+
+	if(to.path !=="/index" && !(to.path.match("/fuel"))  && !!window.login == false){
+		next("/login?redirect="+to.path);
+		console.log(to.path);
 	}
 	
 	if(window.login){

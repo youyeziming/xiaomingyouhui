@@ -9,14 +9,15 @@ export default new Vuex.Store({
 		content:[
 			
 		],
+		fuels:[
+			
+		]
 		
 	},
 	mutations: {
 		SETDATA(state,property){
 			state[property.per] = property.value;
 		}
-	
-		
 	},
 	actions: {
 		loadData({commit}){
@@ -27,10 +28,25 @@ export default new Vuex.Store({
 			{
 				commit("SETDATA",{per:"content",value:JSON.parse(xhr.response)});
 			}
+		},
+		loadFuel({commit}){
+			let xhr  = new XMLHttpRequest();
+			xhr.open("GET","/fuels.json");
+			xhr.send();
+			xhr.onload = ()=>
+			{
+				commit("SETDATA",{per:"fuels",value:JSON.parse(xhr.response)});
+			}
 		}
+		
 	},
 	getters:{
-	
+		getFuels(state){
+			return state.fuels;
+		},
+		getContent(state){
+			return state.content;
+		}
 	},
 	modules: {
 	}

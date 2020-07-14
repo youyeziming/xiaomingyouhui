@@ -3,44 +3,112 @@
 		<h3>一键加油详情</h3>
 		<div class="area_info">
 			<div class="place_img">
-				<img src="https://static.czb365.com/1588062185117.jpg?x-oss-process=image/resize,m_lfit,h_200,w_200/format,png">
+				<img :src="info.img" >
 			</div>
 			<div>
-				<p style="font-weight: 600; font-size: 16px;">大安石油大鸿加油站</p>
-				<p style="font-size: 14px;">惠州市江北41号小区三环北路20号</p>
-				<p ><span class="value_mini">￥4.80</span></p>
+				<p style="font-weight: 600; font-size: 16px;">{{info.place}}</p>
+				<p style="font-size: 14px;">{{info.localtion}}</p>
+				<p ><span class="value_mini">{{info.value}}</span></p>
 			</div>
 		</div>
 		<div class="collect">
-			<SelectList  title="选择商品" :list="fuels"/>
-			<SelectList  title="选择油号" :list="fuelnum"/>
-			<SelectList  title="选择油枪" :list="fuelgun"/>
+			<Tables des="选择商品"  @sc="fuelType = $event" v-if="search(type,index)" >
+				<li slot="index" @click="a"  v-for="(f,fi) in search(type,index)" :data-index="fi" :key="f.type+anchor" :class="fi == 0 ? alive : null" :style="select_li">{{f.type}}</li>
+				<div slot="content" :class="fni == 0?screen:null" v-for="(fn,fni) in search(type,index)" :key="fni+anchor" >
+					<Tables des="选择油号" @sc="fuelNum = $event">
+						<li slot="index"  v-for="(n,ni) in fn.content" :data-index="ni" :class="ni==0?'alive':null" :style="select_li" :key="ni+anchor">{{n.type}}</li>
+						<div slot="content" :class="fgi == 0?screen:null" v-for="(fg,fgi) in fn.content" :key="fgi">
+							<Tables des="选择油枪" @sc="fuelGun = $event">
+								<li slot="index" v-for="(fgs,fgsi) in fg.content"  :class="fgsi==0 ? alive:null" :style="select_li" :key="fgsi+anchor" :data-index="fgsi" >{{fgs}}</li>
+							</Tables>
+						</div>
+					</Tables>
+				</div>
+			</Tables>
 		</div>
+		
 		<div class="quick_fuel">
-			<img style="width: 100%;" src="https://fx.hongtaimingsheng.com/Public/Xmzc/img/oneoil.gif" alt="">
-		</div>
-		<key-board></key-board>
+			<a href="">
+				<img style="width: 100%;" src="https://fx.hongtaimingsheng.com/Public/Xmzc/img/oneoil.gif" alt="">
+			</a>
+		</div> 
 	</div>
 </template>
 
 <script>
-	import SelectList from "../components/SelectList.vue"
-	import KeyBoard from "../components/KeyBoard.vue"
+	
+	import Tables from "../components/Tables.vue"
+	import {mapGetters} from "vuex";
 	export default {
 		name:"Fuel",
+		computed:{
+			...mapGetters(["getFuels","getContent"])
+		},
 		data(){
 			return {
-				fuels:["柴油","汽油"],
-				fuelnum:["92#","95#"],
-				fuelgun:[2,3,6,7,5,12,34]
+				select_li:{
+					margin: "3px",
+					color: "#FFF",
+					"lineHeight": "20px",
+					padding: "6px 12px",
+					background: "#26b1fe",
+					"borderRadius": "6px",
+				},
+				alive:"alive",
+				screen:"screen",
+				anchor:"YYZiMig",
+				info:'',
+				fuelType:undefined,
+				fuelNum:undefined,
+				fuelGun:undefined
 			}
 		},
-		components:{
-			SelectList,
-			KeyBoard
+		methods:{
+			search(parame,index){
+				let value = this.getFuels.filter((v)=>{
+					return v.type == parame;
+				})
+				return value[0]?.content[index]; 
+			},
+			searchContent(parame,index){
+				let value = this.getContent.filter((v)=>{
+					return v.type == parame;
+				})
+				return value[0]?.content[index];
+			},
+			a(){
+				console.log(this);
+			}
 			
 		},
 		
+		mounted(){
+			
+			this.fuelType = this.search(this.type,this.index)[0].type;
+			this.fuelNum = this.search(this.type,this.index)[0].content[0].type;
+			this.fuelGun = this.search(this.type,this.index)[0].content[0].content[0];
+			console.log(this.fuelType,this.fuelNum,this.fuelGun);
+			
+			
+			let res = async function(parame,index){
+				let result = await new Promise((resd)=>{
+					let value = this.getContent;
+					value =	value.filter((v)=>{
+						return v.type == parame;
+					})
+					if(value[0]){
+						resd(value[0]?.content[index]);
+					}
+				})
+				this.info = result;
+			}
+			res.call(this,this.type,this.index); 
+		},
+		
+		props:["type","index"],
+		components:{
+			Tables
+		},
 	}
 </script>
 
@@ -56,11 +124,9 @@
 		background: #efefef;
 	}
 	.area_info{
-	
 		padding: 10px 5px 10px 5px;
 		background-color: #FFFFFF;
 		display: flex;
-		
 	}
 	.area_info img{
 		width: 62px;

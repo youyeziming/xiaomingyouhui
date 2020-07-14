@@ -31,6 +31,12 @@
 				window.login = true;
 				alert("登录成功");
 				this.$router.replace("/");
+				/* if(this.$route.query.redirect==undefined){
+					this.$router.replace("/");
+				}
+				
+				this.$router.replace(this.$route.query.redirect); */
+				
 			}
 		},
 		components:{

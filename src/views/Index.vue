@@ -1,25 +1,26 @@
 <template>
   <div class="index">
-	<AlterMessage :isOpen="open" @changeOpen="changeOpen" des="选择油箱号">
+	<AlterMessage :isOpen="open" @changeOpen="open = false" des="选择油箱号">
 		<SelectList :click="changeYH" title="汽油" :list="gasolines"/>
 		<SelectList :click="changeYH" title="柴油" :list="diesels"/>
 		<SelectList :click="changeYH" title="天然气" :list="gas"/>
 	</AlterMessage>
 	<div id="filter">
-		<div @click="onoff">{{filterValue}}国家价:5.2元/升</div>
+		<div @click="open = true">{{filterValue}}国家价:5.2元/升</div>
 		<div>综合排序</div>
 	</div>
 	<div id="yhlist" >
-		<YhItem v-for="(v,i) in search(filterValue)" :data="v" :key="i+'YYZiMig'"/>
+		<YhItem v-for="(v,i) in search(filterValue)" :type="filterValue" :datas="v" :index="i" :key="i+'YYZiMig'"/>
 	</div>
   </div>
 </template>
 
 <script>
+	
 import YhItem from "../components/YhItem.vue";
 import AlterMessage from "../components/AlterMessage.vue";
 import SelectList from "../components/SelectList.vue";
- import {mapState} from "vuex";
+import {mapState} from "vuex";
  
 
 export default {
@@ -42,21 +43,13 @@ export default {
 	methods:{
 		changeYH(v,event){
 			this.filterValue = v;
-			this.changeOpen();
+			this.open = false;
 			this.alive.classList.remove("alive");
 			this.alive = event.target;
 			this.alive.classList.add("alive");
-			
 		},
-		
 		funcBar(e){
 			e.stopPropagation();
-		},
-		onoff(){
-			this.open = true;
-		},
-		changeOpen(){
-			this.open = false;
 		},
 		search(parame){
 			let value = this.content.filter((v)=>{
@@ -65,9 +58,8 @@ export default {
 			if(value[0] !== undefined){
 				return value[0].content; 
 			}else{
-				return "N";
+				return [{isOpen:true}];
 			}
-			
 		},
 	},
 	components:{

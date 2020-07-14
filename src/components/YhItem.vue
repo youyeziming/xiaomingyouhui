@@ -1,33 +1,33 @@
 <template>
 	<div class="yhitem">
-		<div class="yh_info" v-if="data !== token">
+		<div class="yh_info" v-if="!datas.isOpen">
 			<div class="dingdan" style="">
 				<div class="place">
-					<img :src="data.img">
+					<img :src="datas.img">
 				</div>
 				<div class="position_info">
 					<p class="title">
-						<a >{{data.place}}</a>
+						<a >{{datas.place}}</a>
 					</p>
-					<p class="place_position">{{data.localtion}}</p>
+					<p class="place_position">{{datas.localtion}}</p>
 					<p class="value">
-						<span >￥<em>{{data.value}}</em></span>
-						<span style="padding-left: 10px;">降<em>{{data.div}}</em></span>
+						<span >￥<em>{{datas.value}}</em></span>
+						<span style="padding-left: 10px;">降<em>{{datas.div}}</em></span>
 					</p>
 				</div>
 			</div>
 			<div class="position">
 				<p style="text-align: right;">
 					<img src="../assets/img/Collection.png" alt="" width="20px">
-					<span class="commit" v-if="data.commit">{{data.commit}}</span> 
+					<span class="commit" v-if="datas.commit">{{datas.commit}}</span> 
 				</p>
 				<p class="place_navigation">
-					<a style="color: #fff;" href="fuel">导航</a>
+					<a style="color: #fff;" :href="'/fuel/'+index+'?type='+encodeURIComponent(type)">导航</a>
 				</p>
-				<p >距您{{data.site}}KM</p>
+				<p >距您{{datas.site}}KM</p>
 			</div>
 		</div>
-		<p style="padding: 5px 0px;text-align: center;margin: -5px 0 -5px 0;width: 100vw;background: #efefef;" v-if="data == token">附近暂无油站</p>
+		<p style="padding: 5px 0px;text-align: center;margin: -5px 0 -5px 0;width: 100vw;background: #efefef;" v-if="datas.isOpen">附近暂无油站</p>
 	</div>
 </template>
 
@@ -39,9 +39,20 @@
 				token:"N"
 			}
 		},
-		props:[
-			"data"
-		]
+		props:{
+			"datas":{
+				type:Object,
+				
+			},
+			"index":{
+				type:Number
+			},
+			"type":{
+				type:String
+			}
+		}
+			
+
 	}
 </script>
 
