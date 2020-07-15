@@ -1,11 +1,11 @@
-<template  v-slot={alive}>
+<template  v-slot={alive} >
 	<div class="tables">
 		<div class="des">{{des}}</div>
 		<ul class="nav" ref="nav" >
 			<slot name="index" @click="tap"></slot>
 		</ul>
 		<div class="list" ref="list">
-			<slot name="content"></slot>
+			<slot name="content" ></slot>
 		</div>
 	</div>
 </template>
@@ -19,6 +19,9 @@
 			},
 			des:{
 				type:String
+			},
+			wat:{
+				type:Boolean
 			}
 		},
 		data(){
@@ -27,6 +30,7 @@
 				alive:"alive"
 			}
 		},
+		
 		methods:{
 			tap(e){
 				let index  = e.currentTarget.dataset.index;

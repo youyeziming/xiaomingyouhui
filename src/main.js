@@ -6,6 +6,8 @@ import './plugins/vant.js'
 
 Vue.config.productionTip = false
 
+console.log(1)
+
 new Vue({
   router,
   store,

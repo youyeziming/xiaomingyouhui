@@ -1,32 +1,30 @@
 <template>
 	<div id="Login">
 		<div style="padding: 15px;">
-			<ul>
-				<Input label="账号" description="手机号码"  v-model="ID"/>
-				<hr style=" margin: 0;border-style: ridge;">
-				<Input label="密码" description="密码" type="password"  v-model="PW"/>
-				<hr style=" margin: 0;border-style: ridge;">
-			</ul>
-			<button @click="login" class="btn white">登录</button>
+			<van-form @submit="onSubmit">
+				<van-field v-model="username" name="用户名" label="用户名" placeholder="用户名" :rules="[{ required: true, message: '请填写用户名' }]"  />
+				<van-field v-model="password" type="password" name="密码" label="密码" placeholder="密码" :rules="[{ required: true, message: '请填写密码'}]"/>
+				<div style="margin: 16px;">
+				<van-button round block type="info" native-type="submit"> 提交 </van-button>
+				</div>
+			</van-form>
 		</div>
 	</div>
 </template>
 
 <script>
-	import Input from "../components/Input.vue"
-	
 	
 	export default {
 		name:"Login",
 		
 		data(){
 			return{
-				ID:"",
-				PW:""
+				username: '',
+				password: '',
 			}
 		},
 		methods:{
-			login(){
+			onSubmit(){
 				//模拟登录
 				window.login = true;
 				alert("登录成功");
@@ -40,7 +38,7 @@
 			}
 		},
 		components:{
-			Input
+
 		},
 		mounted(){
 			if(window.login){

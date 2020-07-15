@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from "axios"
 
 Vue.use(Vuex)
 
@@ -11,34 +12,29 @@ export default new Vuex.Store({
 		],
 		fuels:[
 			
-		]
+		],
+		select:{
+			
+		}
+		
 		
 	},
 	mutations: {
 		SETDATA(state,property){
 			state[property.per] = property.value;
-		}
+		},
 	},
 	actions: {
 		loadData({commit}){
-			let xhr  = new XMLHttpRequest();
-			xhr.open("GET","/data.json");
-			xhr.send();
-			xhr.onload = ()=>
-			{
-				commit("SETDATA",{per:"content",value:JSON.parse(xhr.response)});
-			}
+			axios.get('/data.json').then(res => {
+				commit("SETDATA",{per:"content",value:res.data});
+			})
 		},
 		loadFuel({commit}){
-			let xhr  = new XMLHttpRequest();
-			xhr.open("GET","/fuels.json");
-			xhr.send();
-			xhr.onload = ()=>
-			{
-				commit("SETDATA",{per:"fuels",value:JSON.parse(xhr.response)});
-			}
+			axios.get('/fuels.json').then(res => {
+				commit("SETDATA",{per:"fuels",value:res.data});
+			})
 		}
-		
 	},
 	getters:{
 		getFuels(state){

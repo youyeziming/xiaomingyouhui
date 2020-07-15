@@ -1,26 +1,33 @@
 <template>
-	<div class="taber">
-		
-		<ul class="nav">
+	<div class="taber" ref="panel">
+		<ul class="nav" ref="nav">
 			<li @click="tap" v-for="(v,i) in indexs" :key="i" :class="i == index ? alive:''" :data-index="i">{{v}}</li>
 		</ul>
 		
-		<div class="line_bar" ref="lineBar"></div>
+		<div class="line_bar"  :style="position"></div>
 		<div class="list" ref="list">
-			<slot></slot>
+			<slot ></slot>
 		</div>
 	</div>
 </template>
 
 <script>
+	import swiper from "../assets/js/swiper.js";
 	export default {
 		name:"Taber",
 		props:{
 			indexs:{
 				type:Array,
 				default:()=>[1,2,3,4],
+				bar:'',
+				length:""
 			}
 			
+		},
+		computed:{
+			position(){
+				return "left:" + this.index * 25 +"vw"
+			}
 		},
 		data(){
 			return{
@@ -30,15 +37,34 @@
 		},
 		methods:{
 			tap(e){
-				let index  = e.currentTarget.dataset.index;
-				this.$refs.lineBar.style.left = index * 25 +"vw"
+				let index  = e?.currentTarget?.dataset.index ?? e;
 				this.$refs.list.children[this.index].classList.remove("screen")
 				this.$refs.list.children[index].classList.add("screen")
 				this.index = index;
-			}
+			},
 		},
 		mounted(){
 			
+			this.length = this.$refs.nav.children.length;
+	
+			let swiperBar  = new swiper(this.$refs.panel,90,()=>{
+				if((this.index + 1) == this.length){
+					this.tap(0)
+				}else{
+					this.tap(this.index+1);
+				}
+				
+			},()=>{
+				if((this.index - 1) == -1){
+					this.tap(this.length - 1)
+				}else{
+					this.tap(this.index-1);
+				}
+			});
+			this.bar = swiperBar;
+		},
+		beforeDestroy(){
+			this.bar.Distroy();
 		}
 		
 		
@@ -69,7 +95,6 @@
 		background-color: #05BBFC;
 		z-index: 499;
 		transition: left 200ms;
-		left: 0;
 	}
 	
 	.screen{

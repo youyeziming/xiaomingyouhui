@@ -3,17 +3,17 @@
 		<h3>一键加油详情</h3>
 		<div class="area_info">
 			<div class="place_img">
-				<img :src="info.img" >
+				<img :src="this.searchContent(type,index).img" >
 			</div>
 			<div>
-				<p style="font-weight: 600; font-size: 16px;">{{info.place}}</p>
-				<p style="font-size: 14px;">{{info.localtion}}</p>
-				<p ><span class="value_mini">{{info.value}}</span></p>
+				<p style="font-weight: 600; font-size: 16px;">{{this.searchContent(type,index).place}}</p>
+				<p style="font-size: 14px;">{{this.searchContent(type,index).localtion}}</p>
+				<p ><span class="value_mini">{{this.searchContent(type,index).value}}</span></p>
 			</div>
 		</div>
 		<div class="collect">
-			<Tables des="选择商品"  @sc="fuelType = $event" v-if="search(type,index)" >
-				<li slot="index" @click="a"  v-for="(f,fi) in search(type,index)" :data-index="fi" :key="f.type+anchor" :class="fi == 0 ? alive : null" :style="select_li">{{f.type}}</li>
+			<Tables des="选择商品"  @sc="fuelType = $event" v-if="search(type,index)">
+				<li slot="index" v-for="(f,fi) in search(type,index)" :data-index="fi" :key="f.type+anchor" :class="fi == 0 ? alive : null" :style="select_li">{{f.type}}</li>
 				<div slot="content" :class="fni == 0?screen:null" v-for="(fn,fni) in search(type,index)" :key="fni+anchor" >
 					<Tables des="选择油号" @sc="fuelNum = $event">
 						<li slot="index"  v-for="(n,ni) in fn.content" :data-index="ni" :class="ni==0?'alive':null" :style="select_li" :key="ni+anchor">{{n.type}}</li>
@@ -27,22 +27,27 @@
 			</Tables>
 		</div>
 		
-		<div class="quick_fuel">
-			<a href="">
+		<div class="quick_fuel" >
+			<router-link :to="'/inputmoney?value='+ this.searchContent(type,index).value +'&div='+this.searchContent(type,index).div +' &place='+ this.searchContent(type,index).place +' &num='+ encodeURIComponent(fuelNum)+ '&gun=' + fuelGun">
 				<img style="width: 100%;" src="https://fx.hongtaimingsheng.com/Public/Xmzc/img/oneoil.gif" alt="">
-			</a>
+			</router-link>
 		</div> 
 	</div>
 </template>
 
 <script>
-	
+
 	import Tables from "../components/Tables.vue"
 	import {mapGetters} from "vuex";
+	import {mapState} from "vuex";
 	export default {
 		name:"Fuel",
 		computed:{
-			...mapGetters(["getFuels","getContent"])
+			...mapGetters(["getFuels","getContent"]),
+			
+			...mapState({
+				"toFuels":state=>state.fuels
+			})
 		},
 		data(){
 			return {
@@ -58,9 +63,9 @@
 				screen:"screen",
 				anchor:"YYZiMig",
 				info:'',
-				fuelType:undefined,
-				fuelNum:undefined,
-				fuelGun:undefined
+				fuelType:"柴油",
+				fuelNum:"95#",
+				fuelGun:"2",
 			}
 		},
 		methods:{
@@ -76,33 +81,19 @@
 				})
 				return value[0]?.content[index];
 			},
-			a(){
-				console.log(this);
-			}
 			
 		},
 		
 		mounted(){
-			
 			this.fuelType = this.search(this.type,this.index)[0].type;
 			this.fuelNum = this.search(this.type,this.index)[0].content[0].type;
 			this.fuelGun = this.search(this.type,this.index)[0].content[0].content[0];
-			console.log(this.fuelType,this.fuelNum,this.fuelGun);
 			
+			this.info = this.searchContent(this.type,this.index);
+			/* let {div,place,value} = this.info;
+			let values = {div,place,value};
+			this.$store.commit("SETDATAS",values); */
 			
-			let res = async function(parame,index){
-				let result = await new Promise((resd)=>{
-					let value = this.getContent;
-					value =	value.filter((v)=>{
-						return v.type == parame;
-					})
-					if(value[0]){
-						resd(value[0]?.content[index]);
-					}
-				})
-				this.info = result;
-			}
-			res.call(this,this.type,this.index); 
 		},
 		
 		props:["type","index"],

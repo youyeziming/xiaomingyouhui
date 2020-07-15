@@ -5,6 +5,8 @@ import Card from '../views/Card.vue'
 import Home from '../views/Home.vue'
 import Login from "../views/Login.vue"
 import Fuel from "../views/Fuel.vue"
+import InputMoney from "../views/InputMoney.vue"
+import Platform from "../views/Platform.vue"
 
 Vue.use(VueRouter)
 
@@ -13,6 +15,20 @@ const routes = [
     path: '/index',
     name: 'Index',
     component: Index
+  },
+  {
+    path: '/inputmoney',
+    name: 'InputMoney',
+    component: InputMoney,
+	props:({query})=>{
+		return {
+				gun:query.gun,
+				num:decodeURIComponent(query.num),
+				value:query.value,
+				div:query.div,
+				place:query.place
+		}
+	}
   },
   {
 	path:"/",
@@ -43,7 +59,13 @@ const routes = [
 	name: 'Fuel',
 	component:Fuel,
 	props:({params,query})=>({index:params.index,type:decodeURIComponent(query.type)})
-  }
+  },
+  {
+	path: '/platform',
+	name: 'Platform',
+	component: Platform,
+  },
+ 
 ]
 
 const router = new VueRouter({
@@ -53,7 +75,7 @@ const router = new VueRouter({
 })
 
 
-router.beforeEach(function(to,from,next){
+/* router.beforeEach(function(to,from,next){
 
 	if(to.path == "/login" || to.path.match("/fuel")){
 		next();
@@ -72,7 +94,7 @@ router.beforeEach(function(to,from,next){
 	if(window.login){
 		next();
 	}
-});
+}); */
 
 /* router.afterEach(function(to,from){
 	

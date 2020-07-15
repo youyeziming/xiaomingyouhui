@@ -1,28 +1,32 @@
 <template>
   <div id="app" ref="app">
+
 	<router-view/>
+
+	
+	
 	<nav id="navigator">
 		<li>
 			<router-link to="/">
-				<span class="iconfont icon-zhuye"></span>
+				<van-icon name="wap-home-o" size="26" />
 				<p>油惠</p>
 			</router-link>
 		</li>
 		<li>
 			<router-link to="/order">
-				<span class="iconfont icon-dingdan"></span>
+				<van-icon name="balance-list-o" size="26"/>
 				<p>订单</p>
 			</router-link>
 		</li>
 		<li>
 			<router-link to="/card">
-				<span class="iconfont icon-dianpu"></span>
+				<van-icon name="shop-o" size="26" />
 				<p>核销</p>
 			</router-link>
 		</li>
 		<li>
 			<router-link to="/home">
-				<span class="iconfont icon-ziyuan"></span>
+				<van-icon name="user-o" size="26" />
 				<p>我的</p>
 			</router-link>
 		</li>
@@ -31,29 +35,13 @@
 </template>
 
 <script>
-	/* import swiper from "./assets/js/swiper.js";
-	import routerInfo from "./router/router_info.js"; */
 	export default {
 		name:"App",
 		beforeCreate(){
 			this.$store.dispatch("loadData");
+			this.$store.dispatch("loadFuel");
 		},
 		mounted() {
-			this.$store.dispatch("loadData");
-			this.$store.dispatch("loadFuel")
-			
-		/* 	let index = routerInfo.indexOf(this.$route.name);
-			let swiperBar  = new swiper(this.$refs.app,100,()=>{
-				//向右滑动
-				let offset = index = (index+1) == routerInfo.length ? 0 : ++index;
-				this.$router.push({name:routerInfo[offset]});
-			},()=>{
-				//向左滑动
-				let offset = index = (index-1) == -1 ? routerInfo.length - 1 : --index;
-				this.$router.push({name:routerInfo[offset]});
-			});
-			console.log(swiperBar); */
-			
 			
 		}
 	}
@@ -72,11 +60,13 @@
 		left: 0;
 		border-top: 1px solid #ddd;
 		background-color: #fff;
-		opacity: 0.98;
+		opacity: 0.96;
 		
 	}
 	#navigator>li{
 		cursor: pointer;
+		position: relative;
+		top: 1px;
 	}
 	.router-link-exact-active{
 		color: #f00!important;
@@ -86,4 +76,8 @@
 		background-color: #efefef;
 		overflow: hidden;
 	}
+	.van-icon{
+		font-size: 15px;
+	}
+	
 </style>

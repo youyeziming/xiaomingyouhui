@@ -2,22 +2,25 @@
 	<div class="keyboard" :class="isTrigged ? 'trigged' : null ">
 		<div class="key_group">
 			<div class="key_number">
-				<div>1</div>
-				<div>2</div>
-				<div>3</div>
-				<div>4</div>
-				<div>5</div>
-				<div>6</div>
-				<div>7</div>
-				<div>8</div>
-				<div>9</div>
-				<div style="width:50vw;">0</div>
-				<div>.</div>
+				<div @click="send(1)">1</div>
+				<div @click="send(2)">2</div>
+				<div @click="send(3)">3</div>
+				<div @click="send(4)">4</div>
+				<div @click="send(5)">5</div>
+				<div @click="send(6)">6</div>
+				<div @click="send(7)">7</div>
+				<div @click="send(8)">8</div>
+				<div @click="send(9)">9</div>
+				<div @click="send(0)" style="width:50vw;">0</div>
+				<div @click="send('.')">.</div>
 			</div>
 			<div class="func_key">
-				<div class="delete">&lt;-</div>
-				<div class="confirm">确定</div>
+				<div class="delete" @click="del">
+					<van-icon name="arrow-left" size="20"/>
+				</div>
+				<div class="confirm" @click="confirm">确定</div>
 			</div>
+		
 		</div>
 	</div>
 </template>
@@ -29,6 +32,18 @@
 			return{
 				
 			}
+		},
+		methods:{
+			confirm(){
+				this.$emit("confirm");
+			},
+			send(e){
+				this.$emit("send",e);
+			},
+			del(){
+				this.$emit("delete")
+			}
+			
 		},
 		props:{
 			isTrigged:{
@@ -46,7 +61,7 @@
 		display: flex;
 	}
 	.keyboard{
-		position: absolute;
+		position: fixed;
 		width: 100vw;
 		background-color: #f6f6f6;
 		font-size: 16px;
@@ -54,6 +69,7 @@
 		bottom: -280px;
 		display: none;
 		transition: bottom 200ms;
+		z-index: 9999999;
 	}
 	
 	.trigged{
@@ -87,7 +103,9 @@
 	.func_key>div{
 		width: 25vw;
 		height: 80px;
-		line-height: 80px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 	.delete{
 		height: 80px;

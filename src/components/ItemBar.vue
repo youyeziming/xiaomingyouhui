@@ -2,12 +2,13 @@
 	<p class="itembar">
 		<a :href="link">
 			<span class="icon" :style="'background:'+color">
+				<slot></slot>
 			</span>
 			<span class="des">
 				{{mes}}
 			</span>
 			<span class="allow" v-if="allow">
-				&gt;
+				<van-icon name="arrow" />
 			</span>
 		</a>
 	</p>
@@ -46,23 +47,28 @@
 		font-size: 16px;
 		position: relative;
 	}
+	.itembar:active{
+		background-color: #f8f8f8;
+	}
 	.des{
 		
 	}
 	.icon{
-		display: inline-block;
+		display: flex;
 		width: 28px;
 		height: 28px;
 		line-height: 44px;
 		border-radius: 5px;
 		margin-right: 5px;
-	
+		color: #fff;
+		font-size: 20px;
+		justify-content: center;
+		align-items: center;
 	}
 	.allow{
-		float: right;
-		font-family: " microsoft yahei","SimHei";
 		position: absolute;
 		right: 9px;
+		top: 16px;
 	}
 	a{
 		width: 100%;

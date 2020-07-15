@@ -22,7 +22,12 @@
 					<span class="commit" v-if="datas.commit">{{datas.commit}}</span> 
 				</p>
 				<p class="place_navigation">
-					<a style="color: #fff;" :href="'/fuel/'+index+'?type='+encodeURIComponent(type)">导航</a>
+					<router-link style="color: #fff;" :to="'/fuel/'+index+'?type='+encodeURIComponent(type)">
+						<span style="vertical-align: top;font-size: 15px;">
+							<van-icon name="location-o" size="14px" style="vertical-align: top;"/>
+						</span>
+						<span>导航</span>
+					</router-link>
 				</p>
 				<p >距您{{datas.site}}KM</p>
 			</div>

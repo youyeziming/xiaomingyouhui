@@ -6,12 +6,15 @@
 		<SelectList :click="changeYH" title="天然气" :list="gas"/>
 	</AlterMessage>
 	<div id="filter">
-		<div @click="open = true">{{filterValue}}国家价:5.2元/升</div>
+		<div @click="open = true">{{filterValue}}国家价:5.2元/升
+			<em style="position: relative;top: 2px;"><van-icon name="add-o" /></em>
+		</div>
 		<div>综合排序</div>
 	</div>
 	<div id="yhlist" >
 		<YhItem v-for="(v,i) in search(filterValue)" :type="filterValue" :datas="v" :index="i" :key="i+'YYZiMig'"/>
 	</div>
+	
   </div>
 </template>
 
@@ -81,6 +84,7 @@ export default {
 		height: 42px;
 		background-color: #fff;
 		position: fixed;
+		z-index: 10;
 	}
 	#filter>div{
 		width: 50vw;
@@ -98,16 +102,14 @@ export default {
 		width: 100vw;
 		top: 42px;
 		position: absolute;
-		bottom: 50px;
-		overflow-x: hidden;
-		overflow-y: scroll;
 		padding-top: 10px;
+		margin: 0px 0 44px 0;
 	}
 	.index{
-		
 		height: 100vh;
 		position: absolute;
 		width: 100vw;
+		overflow: scroll;
 	}
 	
 </style>
