@@ -49,7 +49,8 @@
 			isTrigged:{
 				type:Boolean,
 				default:true
-			}
+			},
+			
 		}
 		
 		
@@ -67,7 +68,7 @@
 		font-size: 16px;
 		font-weight: 600;
 		bottom: -280px;
-		display: none;
+
 		transition: bottom 200ms;
 		z-index: 9999999;
 	}

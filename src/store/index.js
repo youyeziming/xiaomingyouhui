@@ -34,7 +34,7 @@ export default new Vuex.Store({
 			axios.get('/fuels.json').then(res => {
 				commit("SETDATA",{per:"fuels",value:res.data});
 			})
-		}
+		},
 	},
 	getters:{
 		getFuels(state){

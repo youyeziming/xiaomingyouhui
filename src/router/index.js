@@ -22,11 +22,11 @@ const routes = [
     component: InputMoney,
 	props:({query})=>{
 		return {
-				gun:query.gun,
-				num:decodeURIComponent(query.num),
-				value:query.value,
-				div:query.div,
-				place:query.place
+			gun:query.gun,
+			num:decodeURIComponent(query.num),
+			value:query.value,
+			div:query.div,
+			place:query.place
 		}
 	}
   },
@@ -61,9 +61,10 @@ const routes = [
 	props:({params,query})=>({index:params.index,type:decodeURIComponent(query.type)})
   },
   {
-	path: '/platform',
+	path: '/platform/:index',
 	name: 'Platform',
 	component: Platform,
+	props:({params,query})=>({index:params.index,type:decodeURIComponent(query.type)})
   },
  
 ]

@@ -13,24 +13,26 @@
 				</div>
 			</div>	
 			
+			<SelectFuel></SelectFuel>
+			
 			<div class="contents">
 				<div class="ct">
 					<div class="im">大家评论</div>
-					<div>n人评论</div>
+					<div>{{commits.length}}人评论</div>
 				</div>
 				
-				<div class="cm_col" v-for="v in 20" :key="v" >
+				<div class="cm_col" v-for="(v,k) in commits" :key="k+'Y'" >
 					<div class="commit">
 						<img width="30" height="30" src="http://img.ejiayou.com/activity/pages/platform/soulList/img/header_default.png?v=1" alt="">
 						<div class="com_con">
 							<div class="com_date">
-								2020-4-20
+								{{v.date}}
 							</div>
 							<div class="com_data">
-								油非常不错
+								{{v.data}}
 							</div>
 							
-							<div class="reply">
+							<div class="reply" v-if="v.reply">
 								<img  src="http://img.ejiayou.com/activity/pages/platform/soulList/img/evaluate_bg_icon.png" alt="">
 								<div class="reply_con">
 									<span>小易回复:</span>
@@ -48,41 +50,108 @@
 				</div>
 				
 			</div>
+		
 		</div>
 		
 		
 		<div class="sm">
-			<img src="https://fx.hongtaimingsheng.com/Public/Xmzc/img/oneoil.gif">
+			<router-link to="/inputmoney?value=5.05&div=0.25%20&place=加德士惠深路加油站%20&num=92%23&gun=3">
+				<img style="width: 100%;" src="https://fx.hongtaimingsheng.com/Public/Xmzc/img/oneoil.gif" alt="">
+			</router-link>
 		</div>
 	</div>
 </template>
 
 <script>
+	import SelectFuel from "../components/SelectFuel.vue"
 	export default {
 		name:"Platform",
 		data(){
 			return {
-				
+				commits:[
+					{
+						"date":"2012-2-14",
+						"data":"油很不错",
+						"reply":true
+					},
+					{
+						"date":"2012-3-14",
+						"data":"油还好",
+						"reply":true
+					},
+					{
+						"date":"2012-4-14",
+						"data":"折扣力度大",
+						"reply":false
+					},
+					{
+						"date":"2012-5-14",
+						"data":"不错",
+						"reply":false
+					},
+					{
+						"date":"2012-5-14",
+						"data":"还行",
+						"reply":true
+					},
+					{
+						"date":"2012-5-14",
+						"data":"折扣力度大",
+						"reply":false
+					},
+					{
+						"date":"2012-8-12",
+						"data":"不错",
+						"reply":false
+					}
+				]
 			}
 		},
 		mounted(){
-			let pos =  {};
-			this.$refs.root.ontouchstart = function(e){
-				pos.beforeY = e.changedTouches[0].clientY;
-			}
-			
-			this.$refs.root.ontouchmove = function(e){
-				pos.afterY = e.changedTouches[0].clientY;
-				let abs = pos.afterY - pos.beforeY;
-				if(abs>0&&this.scrollTop == 0){
+			this.effect();
+		},
+		methods:{
+			effect(){
+				let pos =  {} ;
+				let float = this.$refs.float;
+				let default_pos = float.offsetTop;
+				let size = 100;
+				this.$refs.root.ontouchstart = function(e){
+					pos.beforeY = e.changedTouches[0].clientY;
+				}
+				this.$refs.root.ontouchmove = function(e){
+					pos.afterY = e.changedTouches[0].clientY;
+					let abs =pos.afterY - pos.beforeY;
+					if(abs>0&&this.scrollTop == 0){
+						float.style.marginTop = float.offsetTop + 2+"px"
+						size += 0.1; 
+						this.style.backgroundSize =size +"%" +"120px"
+					}else if(abs<0 && this.scrollTop == 0){
+						float.style.marginTop = float.offsetTop - 2+"px"
+						size -= 0.1; 
+						this.style.backgroundSize =size +"%" +"120px"
+					}
 					
 				}
-				
+				this.$refs.root.ontouchend = function(){
+					let speed = 1;
+					let timer =  setInterval(()=>{
+						if(float.offsetTop> default_pos){
+							float.style.marginTop = float.offsetTop - speed +"px"
+							this.style.backgroundSize = ""
+						}else{
+							float.style.marginTop = ""
+							
+							clearInterval(timer);
+						}
+						speed +=0.1;
+					},0)
+				}
 			}
-			this.$refs.root.ontouchend = function(){
-				
-			}
-		}	
+		},
+		components:{
+			SelectFuel
+		}
 	}
 </script>
 
@@ -129,7 +198,7 @@
 	.hr{
 		height: 1px;
 		background-color: rgb(239, 239, 239);
-		margin-bottom: 12px;
+		margin-top: 12px;
 	}
 	
 	
@@ -142,6 +211,7 @@
 		z-index: 999999;
 		background-repeat: no-repeat;
 		background-size: 100% 120px;
+		background-position: center top;
 		
 	}
 	.float_plane{
@@ -179,7 +249,7 @@
 	.sm{
 		
 	}
-	.sm>img{
+	.sm img{
 		width: 100%;
 		bottom: 0;
 		position: fixed;

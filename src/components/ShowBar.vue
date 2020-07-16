@@ -21,7 +21,7 @@
 	}
 </script>
 
-<style>
+<style scoped="scoped">
 	.showbar{
 		display: inline-block;
 		color:#fff;

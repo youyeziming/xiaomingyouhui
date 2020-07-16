@@ -32,18 +32,21 @@
 					<span class="val">￥{{discountMuch}}</span>
 				</div>
 				<div class="row">
-					<div>
+					<!-- <div>
 						<span>优惠卷</span>
 						<span class="place_hold">与直降优惠不同享</span>
 					</div>
-					<div>
-						暂无可用优惠卷
-					</div>
+					<div> -->
+						<van-coupon-cell :coupons="coupons" :chosen-coupon="chosenCoupon" @click="isInput" style="padding: 13px 0px;"/>
+						<van-popup v-model="showList" round position="bottom" style="height: 90%; padding-top: 4px;">
+							<van-coupon-list :show-exchange-bar="false" :coupons="coupons" :chosen-coupon="chosenCoupon"  @change="onChange" @exchange="onExchange"/>
+						</van-popup>
+					<!-- </div> -->
 				</div>
 			</div>
 		</div>
 		<van-submit-bar label="合计待支付:" button-text="确认支付" :price="resMuch" @submit="show = true" />
-		<KeyBoard :isTrigged="isOpen" @send="val.length <= 6 ? val.push($event) :null" @delete="val.pop()" @confirm="isOpen= false"></KeyBoard>
+		<KeyBoard  :isTrigged="isOpen" @send="enter" @delete="val.pop()" @confirm="isOpen= false"></KeyBoard>
 		<van-action-sheet v-model="show" :actions="actions" @select="onSelect" />
 		
 	</div>
@@ -51,9 +54,35 @@
 
 <script>
 	import KeyBoard from "../components/KeyBoard.vue"
-	import { Toast } from 'vant';
+
+	const coupon = [
+		{
+			available: 1,
+			condition: '无法和直降\n优惠叠加使用',
+			reason: '',
+			value: 150,
+			name: '一品油优惠券',
+			startAt: 1489104000,
+			endAt: 1514592000,
+			valueDesc: '1.5',
+			unitDesc: '元',
+		},
+		{
+			available: 1,
+			condition: '无法和直降\n优惠叠加使用',
+			reason: '',
+			value: 250,
+			name: '油海田优惠券',
+			startAt: 1489104001,
+			endAt: 1514592003,
+			valueDesc: '2.5',
+			unitDesc: '元',
+		},
+		
+	];
+
 	
-	console.log(KeyBoard);
+	
 	export default {
 		name:"InputMoney",
 		computed:{
@@ -68,12 +97,20 @@
 				return (much / this.value)["toFixed"](1);
 			},
 			discountMuch(){
+				if(this.chosenCoupon !== -1){
+					return 0;
+				}
 				let much = this.div / this.value;
 				return (much * parseInt(this.getVal) / 2)["toFixed"](2);
 			},
 			resMuch(){
 				let much = parseInt(this.getVal) ;
-				return (much - this.discountMuch)*100;
+				if(this.chosenCoupon !== -1){
+					let res = this.coupons[this.chosenCoupon].value / 100;
+					return (much - res) * 100;
+				}else{
+					return (much - this.discountMuch)*100;
+				}
 			}
 		},
 		data(){
@@ -85,16 +122,42 @@
 					{ name: '微信支付' },
 					{ name: '支付宝支付' },
 				],
+				chosenCoupon: -1,
+				coupons:coupon,
+				showList:false
 			}
 		},
 		components:{
-			KeyBoard
+			KeyBoard,
 		},
 		methods:{
 			onSelect(item) {
+				console.log(item);
 				this.show = false;
-				Toast(item.name);
 			},
+			onChange(index) {
+				this.showList = false;
+				this.chosenCoupon = index;
+			},
+			onExchange(code) {
+				console.log(code);
+				this.coupons.push(coupon);
+			},
+			isInput(){
+				if(this.val.length !== 0){
+					this.showList = true;
+					this.isOpen = false;
+				}else{
+					alert("请输入的金额") 
+				}
+			},
+			enter($event){
+				if($event == "."&& this.val.indexOf(".") !==-1 ){
+					return
+				}else if(this.val.length <= 6 ){
+					this.val.push($event)
+				}
+			}
 		},
 		props:["num","gun","value","div","place"]
 		
