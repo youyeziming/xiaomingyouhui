@@ -20,7 +20,7 @@
 				<ItemBar mes="抵扣卷转赠">
 					<van-icon name="balance-list-o" />
 				</ItemBar>
-				<ItemBar mes="附近油惠" color="#44c4ff" link="/">
+				<ItemBar mes="附近油惠" color="#44c4ff" >
 					<van-icon name="location-o" />
 				</ItemBar>
 				<ItemBar mes="油惠订单" color="#ff729a">
@@ -37,7 +37,7 @@
 				<ItemBar mes="客服热线 4008227886" color="#16dbcb" link="tel:4008227886">
 					<van-icon name="service-o" />
 				</ItemBar>
-				<ItemBar mes="退出登陆" color="#44c4ff" @click="cancellation">
+				<ItemBar mes="退出登陆" color="#44c4ff"  link="/">
 					<van-icon name="cross" />
 				</ItemBar>
 			</div>
@@ -55,10 +55,7 @@
 	export default {
 		name:"Home",
 		methods:{
-			//注销
-			cancellation(){
-				delete window.login;
-			}
+		
 		},
 		components:{
 			ShowBar,

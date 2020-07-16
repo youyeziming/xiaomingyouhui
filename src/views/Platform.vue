@@ -1,26 +1,22 @@
 <template>
-	<div id="Platform" ref="root" style="background-image: url(https://img.ejiayou.com/uploadPic/Image/2019/07/1562731414953.jpg);">
+	<div id="Platform" ref="root" :style="'background-image: url('+this.searchContent(type,index).img+')'">
 		<div class="float_plane" ref="float">
 			<div class="place">
 				<div class="place-img">
 				
-					<img width="40" height="40" src="https://img.ejiayou.com/uploadPic/Image/2019/07/1562731414953.jpg" alt="">
+					<img width="40" height="40" :src="this.searchContent(type,index).img" alt="">
 				</div>
-				
 				<div>
-					<div class="tit">加德士惠州平山加油站</div>
-					<div style="font-size: 12px;">惠东县惠东大道936号</div>
+					<div class="tit">{{this.searchContent(type,index).place}}</div>
+					<div style="font-size: 12px;">{{this.searchContent(type,index).localtion}}</div>
 				</div>
 			</div>	
-			
-			<SelectFuel></SelectFuel>
-			
+			<SelectFuel class="get_ge"></SelectFuel>
 			<div class="contents">
 				<div class="ct">
 					<div class="im">大家评论</div>
 					<div>{{commits.length}}人评论</div>
 				</div>
-				
 				<div class="cm_col" v-for="(v,k) in commits" :key="k+'Y'" >
 					<div class="commit">
 						<img width="30" height="30" src="http://img.ejiayou.com/activity/pages/platform/soulList/img/header_default.png?v=1" alt="">
@@ -44,18 +40,13 @@
 						</div>
 					</div>
 				</div>
-				
 				<div class="cm_more">
 					查看更改评论
 				</div>
-				
 			</div>
-		
 		</div>
-		
-		
 		<div class="sm">
-			<router-link to="/inputmoney?value=5.05&div=0.25%20&place=加德士惠深路加油站%20&num=92%23&gun=3">
+			<router-link :to="'/easyput?value='+ this.searchContent(type,index).value +'&div='+this.searchContent(type,index).div +' &place='+ this.searchContent(type,index).place +' &num='+ encodeURIComponent(fuelNum)+ '&gun=' + fuelGun">
 				<img style="width: 100%;" src="https://fx.hongtaimingsheng.com/Public/Xmzc/img/oneoil.gif" alt="">
 			</router-link>
 		</div>
@@ -64,10 +55,16 @@
 
 <script>
 	import SelectFuel from "../components/SelectFuel.vue"
+	import {mapGetters} from "vuex";
+	
 	export default {
 		name:"Platform",
 		data(){
 			return {
+				fuelType:"",
+				fuelNum:'',
+				fuelGun:'',
+				info:{},
 				commits:[
 					{
 						"date":"2012-2-14",
@@ -107,10 +104,29 @@
 				]
 			}
 		},
+		computed:{
+			...mapGetters(["getFuels","getContent"]),
+		},
 		mounted(){
 			this.effect();
+			this.info = this.searchContent(this.type,this.index);
+			this.fuelType = this.search(this.type,this.index)[0].type;
+			this.fuelNum = this.search(this.type,this.index)[0].content[0].type;
+			this.fuelGun = this.search(this.type,this.index)[0].content[0].content[0];
 		},
 		methods:{
+			search(parame,index){
+				let value = this.getFuels.filter((v)=>{
+					return v.type == parame;
+				})
+				return value[0]?.content[index]; 
+			},
+			searchContent(parame,index){
+				let value = this.getContent.filter((v)=>{
+					return v.type == parame;
+				})
+				return value[0]?.content[index];
+			},
 			effect(){
 				let pos =  {} ;
 				let float = this.$refs.float;
@@ -151,11 +167,21 @@
 		},
 		components:{
 			SelectFuel
-		}
+		},
+		props:["type","index"]
 	}
 </script>
 
 <style scoped="scoped">
+	.get_ge{
+		background-color: #FFFFFF;
+		margin: 12px 0px;
+		padding: 10px;
+		position: sticky;
+		top: 0px;
+		border-bottom: 2px solid #f2f2f2;
+		z-index: 9;
+	}
 	.cm_more{
 		height: 38px;
 		background-color: #fff;

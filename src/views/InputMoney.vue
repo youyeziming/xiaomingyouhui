@@ -32,16 +32,10 @@
 					<span class="val">￥{{discountMuch}}</span>
 				</div>
 				<div class="row">
-					<!-- <div>
-						<span>优惠卷</span>
-						<span class="place_hold">与直降优惠不同享</span>
-					</div>
-					<div> -->
-						<van-coupon-cell :coupons="coupons" :chosen-coupon="chosenCoupon" @click="isInput" style="padding: 13px 0px;"/>
-						<van-popup v-model="showList" round position="bottom" style="height: 90%; padding-top: 4px;">
-							<van-coupon-list :show-exchange-bar="false" :coupons="coupons" :chosen-coupon="chosenCoupon"  @change="onChange" @exchange="onExchange"/>
-						</van-popup>
-					<!-- </div> -->
+					<van-coupon-cell :coupons="coupons" :chosen-coupon="chosenCoupon" @click="isInput" style="padding: 13px 0px;"/>
+					<van-popup v-model="showList" round position="bottom" style="height: 90%; padding-top: 4px;">
+						<van-coupon-list :show-exchange-bar="false" :coupons="coupons" :chosen-coupon="chosenCoupon"  @change="onChange" @exchange="onExchange"/>
+					</van-popup>
 				</div>
 			</div>
 		</div>

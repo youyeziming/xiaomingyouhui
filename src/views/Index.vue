@@ -9,10 +9,10 @@
 		<div @click="open = true">{{filterValue}}国家价:5.2元/升
 			<em style="position: relative;top: 2px;"><van-icon name="add-o" /></em>
 		</div>
-		<div>综合排序</div>
+		<div @click="sort">综合排序</div>
 	</div>
 	<div id="yhlist" >
-		<YhItem v-for="(v,i) in search(filterValue)" :type="filterValue" :datas="v" :index="i" :key="i+'YYZiMig'"/>
+		<YhItem v-for="(v,i) in result" :type="filterValue" :datas="v" :index="i" :key="i+'YYZiMig'"/>
 	</div>
 	
   </div>
@@ -36,12 +36,28 @@ export default {
 			diesels:["-40#","-35#","-30#","-20#","-10#","国四0#","0#","-1001#","-2001#","-3501#"],
 			gas:["CNG","LNG"],
 			alive:'',
+			result:[],
 		}  
 	},
 	computed:{
 		...mapState({
 			content: state => state.content
-		})
+		}),
+		search(){
+			let value = this.content.filter((v)=>{
+				return v.type == this.filterValue;
+			})
+			if(value[0] !== undefined){
+				return value[0].content; 
+			}else{
+				return [{isOpen:true}];
+			}
+		},
+	},
+	watch:{
+		filterValue(){
+			this.result = this.search;
+		}
 	},
 	methods:{
 		changeYH(v,event){
@@ -51,19 +67,11 @@ export default {
 			this.alive = event.target;
 			this.alive.classList.add("alive");
 		},
-		funcBar(e){
-			e.stopPropagation();
-		},
-		search(parame){
-			let value = this.content.filter((v)=>{
-				return v.type == parame;
+		sort(){
+			this.result.sort((a,b)=>{
+				return b.div - a.div;
 			})
-			if(value[0] !== undefined){
-				return value[0].content; 
-			}else{
-				return [{isOpen:true}];
-			}
-		},
+		}
 	},
 	components:{
 		YhItem,
@@ -71,6 +79,13 @@ export default {
 		SelectList
 	},
 	mounted(){
+		if(this.search[0].isOpen){
+			new Promise((rej)=>{
+				setTimeout(()=>rej(this.search),1000);
+			}).then((e)=>this.result = e);
+		}else{
+			this.result = this.search;
+		}
 		this.alive = document.querySelector(".selectitem");
 		this.alive.classList.add("alive");
 	}

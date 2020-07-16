@@ -39,15 +39,10 @@
 
 	import Tables from "../components/Tables.vue"
 	import {mapGetters} from "vuex";
-	import {mapState} from "vuex";
 	export default {
 		name:"Fuel",
 		computed:{
 			...mapGetters(["getFuels","getContent"]),
-			
-			...mapState({
-				"toFuels":state=>state.fuels
-			})
 		},
 		data(){
 			return {

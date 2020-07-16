@@ -22,12 +22,21 @@
 					<span class="commit" v-if="datas.commit">{{datas.commit}}</span> 
 				</p>
 				<p class="place_navigation">
-					<router-link style="color: #fff;" :to="'/fuel/'+index+'?type='+encodeURIComponent(type)">
+					
+					<router-link v-if="index % 2 == 0" style="color: #fff;" :to="'/fuel/'+index+'?type='+encodeURIComponent(type)">
 						<span style="vertical-align: top;font-size: 15px;">
 							<van-icon name="location-o" size="14px" style="vertical-align: top;"/>
 						</span>
 						<span>导航</span>
 					</router-link>
+					
+					<router-link v-else style="color: #fff;" :to="'/platform/'+index+'?type='+encodeURIComponent(type)">
+						<span style="vertical-align: top;font-size: 15px;">
+							<van-icon name="location-o" size="14px" style="vertical-align: top;"/>
+						</span>
+						<span>导航</span>
+					</router-link>
+					
 				</p>
 				<p >距您{{datas.site}}KM</p>
 			</div>
@@ -56,8 +65,6 @@
 				type:String
 			}
 		}
-			
-
 	}
 </script>
 

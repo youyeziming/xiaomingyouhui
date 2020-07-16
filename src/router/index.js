@@ -7,6 +7,8 @@ import Login from "../views/Login.vue"
 import Fuel from "../views/Fuel.vue"
 import InputMoney from "../views/InputMoney.vue"
 import Platform from "../views/Platform.vue"
+import EasyPut from "../views/EasyPut.vue"
+
 
 Vue.use(VueRouter)
 
@@ -66,6 +68,20 @@ const routes = [
 	component: Platform,
 	props:({params,query})=>({index:params.index,type:decodeURIComponent(query.type)})
   },
+  {
+	path:"/easyput",
+	name:"EasyPut",
+	component:EasyPut,
+	props:({query})=>{
+		return {
+			gun:query.gun,
+			num:decodeURIComponent(query.num),
+			value:query.value,
+			div:query.div,
+			place:query.place
+		}
+	}
+  }
  
 ]
 
@@ -76,26 +92,24 @@ const router = new VueRouter({
 })
 
 
-/* router.beforeEach(function(to,from,next){
+ router.beforeEach(function(to,from,next){
 
-	if(to.path == "/login" || to.path.match("/fuel")){
+	if(to.path == "/login"){
 		next();
 	}
-	
 	
 	if(to.path == "/"||to.path== "/index"){
 		next();
 	}
 
-	if(to.path !=="/index" && !(to.path.match("/fuel"))  && !!window.login == false){
+	if(to.path !=="/index" && !!window.login == false){
 		next("/login?redirect="+to.path);
-		console.log(to.path);
 	}
 	
 	if(window.login){
 		next();
 	}
-}); */
+}); 
 
 /* router.afterEach(function(to,from){
 	
